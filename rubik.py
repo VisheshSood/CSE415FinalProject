@@ -15,7 +15,9 @@ PROBLEM_DESC = \
 # </METADATA>
 
 # SIDES = ["Left", "Front", "Right", "Back", "Up", "Down"]
-INITIAL_STATE = None
+INITIAL_STATE = [[5, 2, 5, 2, 1, 1, 2, 1, 1], [3, 3, 4, 5, 2, 5, 5, 3, 5],
+                 [6, 4, 6, 3, 3, 4, 3, 3, 4], [2, 1, 1, 6, 4, 6, 6, 1, 6],
+                 [4, 4, 1, 5, 5, 5, 4, 4, 1], [2, 6, 2, 2, 6, 2, 3, 6, 3]]
 GOAL_STATE = None
 
 
@@ -54,6 +56,10 @@ def createGoalState():
         state.append(new)
     GOAL_STATE = state
 
+def goalMessage():
+    print("The Rubik's Cube has been solved!!")
+    print("Final State: ")
+    describeState(GOAL_STATE)
 
 def describeState(state):
     tiles = state[4]
@@ -72,15 +78,11 @@ def describeState(state):
     for i in range(0, 9, 3):
         print("      " + str(tiles[i]) + " " + str(tiles[i + 1]) + " " + str(tiles[i + 2]))
 
-
+def scramble():
+    return None
 
 createGoalState()
-lol = copyState(GOAL_STATE)
-lol[3][5] = 8
-lol[3][3] = 8
-
-describeState(lol)
-describeState(GOAL_STATE)
+describeState(INITIAL_STATE)
 
 
 
