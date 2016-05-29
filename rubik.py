@@ -79,7 +79,7 @@ def describeState(state):
         print("      " + str(tiles[i]) + " " + str(tiles[i + 1]) + " " + str(tiles[i + 2]))
 
 def scramble():
-    return
+    return None
 
 createGoalState()
 describeState(INITIAL_STATE)
