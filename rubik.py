@@ -1,3 +1,5 @@
+import copy
+
 # <METADATA>
 QUIET_VERSION = "0.1"
 PROBLEM_NAME = "Rubik Cube Solver"
@@ -24,6 +26,22 @@ class Operator:
 
     def apply(self, s):
         return self.state_transf(s)
+
+
+def deepEquals(state1, state2):
+    for side in range(6):
+        for tile in range(9):
+            if state1[side][tile] != state2[side][tile]:
+                return False
+    return True
+
+
+def hashcode(state):
+    return str(GOAL_STATE)
+
+
+def copyState(state):
+    return copy.deepcopy(state)
 
 
 def createGoalState():
@@ -57,7 +75,11 @@ def describeState(state):
 
 
 createGoalState()
-print(str(GOAL_STATE))
+lol = copyState(GOAL_STATE)
+lol[3][5] = 8
+lol[3][3] = 8
+
+describeState(lol)
 describeState(GOAL_STATE)
 
 
