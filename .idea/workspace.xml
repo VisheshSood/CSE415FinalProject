@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1d6df766-cad5-41a2-80f0-c951b3d79aaf" name="Default" comment="another">
+    <list default="true" id="1d6df766-cad5-41a2-80f0-c951b3d79aaf" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rubik.py" afterPath="$PROJECT_DIR$/rubik.py" />
     </list>
@@ -19,7 +19,7 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/final_project$Poker.coverage" NAME="Poker Coverage Results" MODIFIED="1463963164879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/final_project$Card.coverage" NAME="Card Coverage Results" MODIFIED="1463961484052" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/final_project$rubik.coverage" NAME="rubik Coverage Results" MODIFIED="1464590602732" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/final_project$rubik.coverage" NAME="rubik Coverage Results" MODIFIED="1464599686141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/final_project$main.coverage" NAME="main Coverage Results" MODIFIED="1464043045618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Rubiks-master" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -34,8 +34,8 @@
       <file leaf-file-name="rubik.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/rubik.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="123" column="29" selection-start-line="123" selection-start-column="29" selection-end-line="123" selection-end-column="29" />
+            <state relative-caret-position="196">
+              <caret line="226" column="51" selection-start-line="226" selection-start-column="51" selection-end-line="226" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -470,7 +470,14 @@
       <option name="project" value="LOCAL" />
       <updated>1464505870862</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added some new direction functions">
+      <created>1464590657892</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1464590657892</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView">
@@ -520,7 +527,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="new initial state" />
     <MESSAGE value="init!" />
-    <option name="LAST_COMMIT_MESSAGE" value="init!" />
+    <MESSAGE value="added some new direction functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="added some new direction functions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -549,8 +557,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/rubik.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="123" column="29" selection-start-line="123" selection-start-column="29" selection-end-line="123" selection-end-column="29" />
+        <state relative-caret-position="196">
+          <caret line="226" column="51" selection-start-line="226" selection-start-column="51" selection-end-line="226" selection-end-column="51" />
           <folding />
         </state>
       </provider>
