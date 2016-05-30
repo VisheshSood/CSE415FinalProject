@@ -20,6 +20,8 @@ INITIAL_STATE = [[5, 2, 5, 2, 1, 1, 2, 1, 1], [3, 3, 4, 5, 2, 5, 5, 3, 5],
                  [4, 4, 3, 5, 5, 5, 4, 4, 1], [2, 6, 2, 2, 6, 2, 3, 6, 3]]
 GOAL_STATE = None
 
+OPERATORS = []
+
 
 class Operator:
     def __init__(self, name, state_transf):
@@ -85,14 +87,12 @@ def scramble():
     return None
 
 
-def move(action, s):
-    # act = actions.get(action)
-    act(s)
-
 
 # going from 5 to 3, reverse order of tiles
 # reverse back when going
-def left(s):
+def left(state):
+    s = copyState(state)
+
     indices = [0, 1, 2]
     rotation = [5, 3, 4, 1]
     last_update = [s[1][0], s[1][3], s[1][6]]
@@ -115,7 +115,9 @@ def left(s):
     return s
 
 
-def right(s):
+def right(state):
+    s = copyState(state)
+
     indices = [0, 1, 2]
     rotation = [4, 3, 5, 1]
     last_update = [s[1][2], s[1][5], s[1][8]]
@@ -138,7 +140,8 @@ def right(s):
     return s
 
 
-def up(s):
+def up(state):
+    s = copyState(state)
     indices = [0, 1, 2]
     rotation = [3, 2, 1, 0]
     last_update = [s[0][0], s[0][1], s[0][2]]
@@ -152,7 +155,8 @@ def up(s):
     return s
 
 
-def down(s):
+def down(state):
+    s = copyState(state)
     indices = [6, 7, 8]
     rotation = [1, 2, 3, 0]
     last_update = [s[0][6], s[0][7], s[0][8]]
@@ -166,7 +170,8 @@ def down(s):
     return s
 
 
-def front(s):
+def front(state):
+    s = copyState(state)
     last_update = [s[5][0], s[5][1], s[5][2]]
 
     # Get values from 2 and put into 5
@@ -210,7 +215,7 @@ def front(s):
 
 
 def rot2(a):
-    n = len(a)
+    n = 3
     c = (n + 1) // 2
     f = n // 2
     for x in range(c):
@@ -228,7 +233,8 @@ def rot2(a):
             a[n - 1 - x][n - 1 - y] = a[n - 1 - x][n - 1 - y] ^ a[y][n - 1 - x]
 
 
-def back(s):
+def back(state):
+    s = copyState(state)
     last_update = [s[4][0], s[4][1], s[4][2]]
 
     # 2 go to 4
@@ -270,11 +276,28 @@ def back(s):
 
     return s
 
+def createOperators():
+    global OPERATORS
+    operators = OPERATORS
+    operators.append(Operator("Up", lambda s: up(s)))
+    operators.append(Operator("Down", lambda s: down(s)))
+    operators.append(Operator("Left", lambda s: left(s)))
+    operators.append(Operator("Right", lambda s: right(s)))
+    operators.append(Operator("Front", lambda s: front(s)))
+    operators.append(Operator("Back", lambda s: back(s)))
 
 createGoalState()
 describeState(INITIAL_STATE)
+createOperators()
 print()
-describeState(back(INITIAL_STATE))
+describeState(OPERATORS[0].apply(INITIAL_STATE))
+print()
+describeState(OPERATORS[1].apply(INITIAL_STATE))
+print()
+describeState(OPERATORS[2].apply(INITIAL_STATE))
+print()
+describeState(OPERATORS[3].apply(INITIAL_STATE))
+
 
 
 
