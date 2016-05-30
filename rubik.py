@@ -210,11 +210,11 @@ def front(s):
 
 
 def rot2(a):
-    n = 3
-    c = (n + 1) / 2
-    f = n / 2
-    for x in range(2):
-        for y in range(1):
+    n = len(a)
+    c = (n + 1) // 2
+    f = n // 2
+    for x in range(c):
+        for y in range(f):
             a[x][y] = a[x][y] ^ a[n - 1 - y][x]
             a[n - 1 - y][x] = a[x][y] ^ a[n - 1 - y][x]
             a[x][y] = a[x][y] ^ a[n - 1 - y][x]
@@ -229,13 +229,52 @@ def rot2(a):
 
 
 def back(s):
-    return 0
+    last_update = [s[4][0], s[4][1], s[4][2]]
+
+    # 2 go to 4
+    s[4][0] = s[2][2]
+    s[4][1] = s[2][5]
+    s[4][2] = s[2][8]
+
+    # 5 goes to 2
+    s[2][2] = s[5][8]
+    s[2][5] = s[5][7]
+    s[2][8] = s[5][6]
+    # 0 goes to 5
+    s[5][8] = s[0][6]
+    s[5][7] = s[0][3]
+    s[5][6] = s[0][0]
+
+    # 4 goes to 0
+
+    s[0][0] = last_update[2]
+    s[0][3] = last_update[1]
+    s[0][6] = last_update[0]
+
+    tempArray = []
+
+    for i in range(3):
+        val1 = s[3][i * 3]
+        val2 = s[3][(i * 3) + 1]
+        val3 = s[3][(i * 3) + 2]
+        tempArray.append([val1, val2, val3])
+
+    rot2(tempArray)
+
+    list_to_update = []
+    for i in range(3):
+        for j in range(3):
+            list_to_update.append(tempArray[i][j])
+
+    s[3] = list_to_update
+
+    return s
 
 
 createGoalState()
 describeState(INITIAL_STATE)
 print()
-describeState(front(INITIAL_STATE))
+describeState(back(INITIAL_STATE))
 
 
 
