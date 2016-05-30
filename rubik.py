@@ -15,9 +15,9 @@ PROBLEM_DESC = \
 # </METADATA>
 
 # SIDES = ["Left", "Front", "Right", "Back", "Up", "Down"]
-INITIAL_STATE = [[5, 2, 5, 2, 1, 1, 2, 1, 1], [3, 3, 4, 5, 2, 5, 5, 3, 5],
-                 [6, 4, 6, 3, 3, 4, 3, 3, 4], [2, 1, 1, 6, 4, 6, 6, 1, 6],
-                 [4, 4, 3, 5, 5, 5, 4, 4, 1], [2, 6, 2, 2, 6, 2, 3, 6, 3]]
+INITIAL_STATE = [[4, 2, 0, 5, 0, 4, 3, 1, 1], [1, 2, 1, 0, 1, 5, 4, 1, 1],
+                 [5, 0, 0, 0, 2, 5, 5, 4, 0], [4, 2, 3, 1, 3, 3, 5, 5, 2],
+                 [2, 4, 3, 1, 4, 3, 4, 3, 2], [2, 0, 0, 4, 5, 3, 5, 2, 3]]
 GOAL_STATE = None
 
 OPERATORS = []
@@ -31,6 +31,9 @@ class Operator:
     def apply(self, s):
         return self.state_transf(s)
 
+def createInitialState():
+    global INITIAL_STATE
+    return INITIAL_STATE
 
 def deepEquals(state1, state2):
     for side in range(6):
@@ -54,7 +57,7 @@ def createGoalState():
     for i in range(6):
         new = []
         for j in range(9):
-            new.append(i + 1)
+            new.append(i)
         state.append(new)
     GOAL_STATE = state
 
@@ -287,7 +290,7 @@ def createOperators():
     operators.append(Operator("Back", lambda s: back(s)))
 
 createGoalState()
-describeState(INITIAL_STATE)
+describeState(GOAL_STATE)
 createOperators()
 print()
 describeState(OPERATORS[0].apply(INITIAL_STATE))
