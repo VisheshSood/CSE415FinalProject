@@ -19,7 +19,7 @@ PROBLEM_DESC = \
 INITIAL_STATE = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [3, 1, 3, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2, 2, 2], [1, 3, 1, 3, 3, 3, 3, 3, 3], [4, 4, 4, 4, 4, 4, 4, 4, 4], [5, 5, 5, 5, 5, 5, 5, 5, 5]]
 INT_TO_COLORS = {0: 'G', 1: 'O', 2: 'B', 3: 'R', 4: 'Y', 5: 'W',}
 GOAL_STATE = None
-
+ACTIONS = ["Up", "Down", "Left", "Right", "Front", "Back"]
 OPERATORS = []
 
 class Operator:
@@ -382,7 +382,38 @@ HEURISTICS = {'h_layer': h_layer, 'h_side': h_side, 'h_none': h_none}
 
 
 
+
+import MDP
+
+def T(s, a, sp):
+    return 1
+
+def R(s, a, sp):
+    global GOAL_STATE
+    if sp == GOAL_STATE:
+        return 1
+    else:
+        return -0.01
+
+def test():
+    '''Create the MDP, then run an episode of random actions for 10 steps.'''
+    grid_MDP = MDP.MDP()
+    grid_MDP.register_start_state(createInitialState())
+    grid_MDP.register_actions(ACTIONS)
+    grid_MDP.register_operators(OPERATORS)
+    grid_MDP.register_transition_function(T)
+    grid_MDP.register_reward_function(R)
+    #grid_MDP.random_episode(100)
+    grid_MDP.generateAllStates()
+    grid_MDP.ValueIterations(.8, 10)
+    #printGrids(grid_MDP.V)
+    grid_MDP.checkSuccessors()
+    #displayQValues(grid_MDP)
+    #displayOptimalPolicy(grid_MDP)
 createInitialState()
+
+test()
+
 
 #print(down(down(left(left(up(up(left(left(down(down(up(up(GOAL_STATE)))))))))))))
 # createOperators()
