@@ -7,21 +7,21 @@ else:
   Problem = importlib.import_module(sys.argv[1])
 
 
-print("\nWelcome to ItrBFS")
+print("\nWelcome to ItrDFS")
 COUNT = None
 BACKLINKS = {}
 
-def runBFS():
+def runDFS():
   initial_state = Problem.createInitialState()
   print("Initial State:")
-  print(Problem.describeState(initial_state))
+  Problem.describeState(initial_state)
   global COUNT, BACKLINKS
   COUNT = 0
   BACKLINKS = {}
-  IterativeBFS(initial_state)
+  IterativeDFS(initial_state)
   print(str(COUNT)+" states examined.")
 
-def IterativeBFS(initial_state):
+def IterativeDFS(initial_state):
   global COUNT, BACKLINKS
 
   OPEN = [initial_state]
@@ -39,9 +39,9 @@ def IterativeBFS(initial_state):
       return
 
     COUNT += 1
-    if (COUNT % 320)==0:
+    if (COUNT % 32)==0:
        print(".",end="")
-       if (COUNT % 1280)==0:
+       if (COUNT % 128)==0:
          print("COUNT = "+str(COUNT))
          print("len(OPEN)="+str(len(OPEN)))
          print("len(CLOSED)="+str(len(CLOSED)))
@@ -49,21 +49,20 @@ def IterativeBFS(initial_state):
     for op in Problem.OPERATORS:
       #Optionally uncomment the following when debugging
       #a new problem formulation.
-      print("Trying operator: "+op.name)
+      #print("Trying operator: "+op.name)
       new_state = op.state_transf(S)
       if not occurs_in(new_state, CLOSED):
         L.append(new_state)
         BACKLINKS[Problem.hashCode(new_state)] = S
-        #Uncomment for debugging:
-        #print(Problem.describeState(new_state))
+      #Uncomment for debugging:
+      #print(Problem.DESCRIBE_STATE(new_state))
 
     for s2 in L:
       for i in range(len(OPEN)):
         if Problem.deepEquals(s2, OPEN[i]):
           del OPEN[i]; break
 
-  # BFS modification: inserts the members of L at the end of OPEN.
-    OPEN = OPEN + L
+    OPEN = L + OPEN
 
 def backtrace(S):
   global BACKLINKS
@@ -85,4 +84,4 @@ def occurs_in(s1, lst):
   return False
 
 if __name__=='__main__':
-  runBFS()
+  runDFS()

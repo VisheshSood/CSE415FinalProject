@@ -1,4 +1,5 @@
 import copy
+import queue
 
 # <METADATA>
 QUIET_VERSION = "0.1"
@@ -15,18 +16,14 @@ PROBLEM_DESC = \
 # </METADATA>
 
 # SIDES = ["Left", "Front", "Right", "Back", "Up", "Down"]
-INITIAL_STATE = [[3, 3, 3, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 1, 1, 1], [1, 1, 1, 2, 2, 2, 2, 2, 2], [2, 2, 2, 3, 3, 3, 3, 3, 3], [4, 4, 4, 4, 4, 4, 4, 4, 4], [5, 5, 5, 5, 5, 5, 5, 5, 5]]
-
-
-# [[4, 2, 0, 5, 0, 4, 3, 1, 1], [1, 2, 1, 0, 1, 5, 4, 1, 1],
-#                  [5, 0, 0, 0, 2, 5, 5, 4, 0], [4, 2, 3, 1, 3, 3, 5, 5, 2],
-#                  [2, 4, 3, 1, 4, 3, 4, 3, 2], [2, 0, 0, 4, 5, 3, 5, 2, 3]]
+INITIAL_STATE = [[4, 2, 0, 5, 0, 4, 3, 1, 1], [1, 2, 1, 0, 1, 5, 4, 1, 1],
+                 [5, 0, 0, 0, 2, 5, 5, 4, 0], [4, 2, 3, 1, 3, 3, 5, 5, 2],
+                 [2, 4, 3, 1, 4, 3, 4, 3, 2], [2, 0, 0, 4, 5, 3, 5, 2, 3]]
 
 
 GOAL_STATE = None
 
 OPERATORS = []
-
 
 class Operator:
     def __init__(self, name, state_transf):
@@ -290,6 +287,8 @@ def back(state):
 
     return s
 
+def h_none(s):
+    return 0
 
 def h_side(s):
     value = 0
@@ -372,23 +371,24 @@ def h_layer(s):
 def createOperators():
     global OPERATORS
     operators = OPERATORS
-    operators.append(Operator("Up", lambda s: up(s)))
-    operators.append(Operator("Down", lambda s: down(s)))
-    operators.append(Operator("Left", lambda s: left(s)))
-    operators.append(Operator("Right", lambda s: right(s)))
-    operators.append(Operator("Front", lambda s: front(s)))
-    operators.append(Operator("Back", lambda s: back(s)))
+    operators.append(Operator("Up", lambda s: up(up(s))))
+    operators.append(Operator("Down", lambda s: down(down(s))))
+    operators.append(Operator("Left", lambda s: left(left(s))))
+    operators.append(Operator("Right", lambda s: right(right(s))))
+    operators.append(Operator("Front", lambda s: front(front(s))))
+    operators.append(Operator("Back", lambda s: back(back(s))))
 
 
 HEURISTICS = {'h_layer': h_layer, 'h_side': h_side}
 
 
-createGoalState()
 
-#print(up(up(up(GOAL_STATE))))
+createInitialState()
+
+print(up(up(GOAL_STATE)))
 # createOperators()
 # print()
-# describeState(OPERATORS[0].apply(INITIAL_STATE))
+#describeState(OPERATORS[0].apply(INITIAL_STATE))
 # print()
 # describeState(OPERATORS[1].apply(INITIAL_STATE))
 # print()
