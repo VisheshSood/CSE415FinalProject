@@ -16,7 +16,7 @@ PROBLEM_DESC = \
 
 # SIDES = ["Left", "Front", "Right", "Back", "Up", "Down"]
 INITIAL_STATE = [[2, 2, 0, 0], [1, 1, 3, 3], [2, 2, 0, 0], [3, 3, 1, 1], [5, 4, 5, 4], [4, 5, 4, 5]]
-
+INT_TO_COLORS = {0: 'G', 1: 'O', 2: 'B', 3: 'R', 4: 'Y', 5: 'W',}
 GOAL_STATE = None
 
 OPERATORS = []
@@ -77,21 +77,22 @@ def goalMessage():
 
 
 def describeState(state):
+    global INT_TO_COLORS
     tiles = state[4]
     for i in range(0, 4, 2):
-        print("    " + str(tiles[i]) + " " + str(tiles[i + 1]) + " ")
+        print("    " + INT_TO_COLORS.get(tiles[i]) + " " + INT_TO_COLORS.get(tiles[i + 1]) + " ")
 
     for i in range(0, 4, 2):
         line = ""
-        line += str(state[0][i]) + " " + str(state[0][i + 1]) + " "
-        line += str(state[1][i]) + " " + str(state[1][i + 1]) + " "
-        line += str(state[2][i]) + " " + str(state[2][i + 1]) + " "
-        line += str(state[3][i]) + " " + str(state[3][i + 1]) + " "
+        line += INT_TO_COLORS.get(state[0][i]) + " " + INT_TO_COLORS.get(state[0][i + 1]) + " "
+        line += INT_TO_COLORS.get(state[1][i]) + " " + INT_TO_COLORS.get(state[1][i + 1]) + " "
+        line += INT_TO_COLORS.get(state[2][i]) + " " + INT_TO_COLORS.get(state[2][i + 1]) + " "
+        line += INT_TO_COLORS.get(state[3][i]) + " " + INT_TO_COLORS.get(state[3][i + 1]) + " "
         print(line)
     tiles = state[5]
 
     for i in range(0, 4, 2):
-        print("    " + str(tiles[i]) + " " + str(tiles[i + 1]) + " ")
+        print("    " + INT_TO_COLORS.get(tiles[i]) + " " + INT_TO_COLORS.get(tiles[i + 1]) + " ")
 
 
 # going from 5 to 3, reverse order of tiles
@@ -343,12 +344,12 @@ def createOperators():
 HEURISTICS = {'h_layer': h_layer, 'h_side': h_side, 'h_none':h_none}
 
 #createGoalState()
-
+createInitialState()
 #print((right(right(back(back(front(front(up(up(GOAL_STATE))))))))))
 #
 #print(up(GOAL_STATE))
 # print()
-# describeState(left(GOAL_STATE))
+describeState(left(GOAL_STATE))
 # print()
 # describeState(left(left(GOAL_STATE)))
 # createOperators()

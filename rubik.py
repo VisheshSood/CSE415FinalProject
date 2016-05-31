@@ -17,10 +17,7 @@ PROBLEM_DESC = \
 
 # SIDES = ["Left", "Front", "Right", "Back", "Up", "Down"]
 INITIAL_STATE = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [3, 1, 3, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2, 2, 2], [1, 3, 1, 3, 3, 3, 3, 3, 3], [4, 4, 4, 4, 4, 4, 4, 4, 4], [5, 5, 5, 5, 5, 5, 5, 5, 5]]
-
-
-
-
+INT_TO_COLORS = {0: 'G', 1: 'O', 2: 'B', 3: 'R', 4: 'Y', 5: 'W',}
 GOAL_STATE = None
 
 OPERATORS = []
@@ -75,24 +72,23 @@ def goalMessage():
     print("Final State: ")
     describeState(GOAL_STATE)
 
-
 def describeState(state):
+    global INT_TO_COLORS
     tiles = state[4]
     for i in range(0, 9, 3):
-        print("      " + str(tiles[i]) + " " + str(tiles[i + 1]) + " " + str(tiles[i + 2]))
+        print("      " + INT_TO_COLORS.get(tiles[i]) + " " + INT_TO_COLORS.get(tiles[i + 1]) + " " + INT_TO_COLORS.get(tiles[i + 2]))
 
     for i in range(0, 9, 3):
         line = ""
-        line += str(state[0][i]) + " " + str(state[0][i + 1]) + " " + str(state[0][i + 2]) + " "
-        line += str(state[1][i]) + " " + str(state[1][i + 1]) + " " + str(state[1][i + 2]) + " "
-        line += str(state[2][i]) + " " + str(state[2][i + 1]) + " " + str(state[2][i + 2]) + " "
-        line += str(state[3][i]) + " " + str(state[3][i + 1]) + " " + str(state[3][i + 2]) + " "
+        line += INT_TO_COLORS.get(state[0][i]) + " " + INT_TO_COLORS.get(state[0][i + 1]) + " " + INT_TO_COLORS.get(state[0][i + 2]) + " "
+        line += INT_TO_COLORS.get(state[1][i]) + " " + INT_TO_COLORS.get(state[1][i + 1]) + " " + INT_TO_COLORS.get(state[1][i + 2]) + " "
+        line += INT_TO_COLORS.get(state[2][i]) + " " + INT_TO_COLORS.get(state[2][i + 1]) + " " + INT_TO_COLORS.get(state[2][i + 2]) + " "
+        line += INT_TO_COLORS.get(state[3][i]) + " " + INT_TO_COLORS.get(state[3][i + 1]) + " " + INT_TO_COLORS.get(state[3][i + 2]) + " "
         print(line)
     tiles = state[5]
 
     for i in range(0, 9, 3):
-        print("      " + str(tiles[i]) + " " + str(tiles[i + 1]) + " " + str(tiles[i + 2]))
-
+        print("      " + INT_TO_COLORS.get(tiles[i]) + " " + INT_TO_COLORS.get(tiles[i + 1]) + " " + INT_TO_COLORS.get(tiles[i + 2]))
 
 def scramble():
     return None
@@ -386,14 +382,14 @@ HEURISTICS = {'h_layer': h_layer, 'h_side': h_side, 'h_none': h_none}
 
 
 
-#createInitialState()
+createInitialState()
 
 #print(down(down(left(left(up(up(left(left(down(down(up(up(GOAL_STATE)))))))))))))
 # createOperators()
 # print()
 #describeState(OPERATORS[0].apply(INITIAL_STATE))
 # print()
-# describeState(OPERATORS[1].apply(INITIAL_STATE))
+describeState(OPERATORS[1].apply(INITIAL_STATE))
 # print()
 # describeState(OPERATORS[2].apply(INITIAL_STATE))
 # print()
