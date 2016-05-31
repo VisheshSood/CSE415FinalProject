@@ -5,15 +5,22 @@ import importlib
 Problem = importlib.import_module('rubik')
 heuristics = Problem.HEURISTICS['h_none']
 
-print("\nWelcome to AStar")
+print("\nWelcome to our A* Implementation for solving a Rubik's Cube")
 COUNT = None
 BACKLINKS = {}
 BACKACTIONS = {}
 
 def runAStar():
     initial_state = Problem.createInitialState()
-    print("Initial State:")
+    print("This is your initial state:")
     Problem.describeState(initial_state)
+    scramble = input("Would you like to scramble it? (y/n) ")
+    while scramble is 'y':
+        initial_state = Problem.scramble()
+        print("Your initial state is now:")
+        Problem.describeState(initial_state)
+        scramble = input("Would you like to scramble it again? (y/n) ")
+
     global COUNT, BACKLINKS, BACKACTIONS
     COUNT = 0
     IterativeAStar(initial_state)

@@ -1,5 +1,5 @@
 import copy
-import queue
+import random
 
 # <METADATA>
 QUIET_VERSION = "0.1"
@@ -36,7 +36,33 @@ def createInitialState():
     global INITIAL_STATE
     createGoalState()
     createOperators()
+    requestColors = input("Would you like to customize the colors of your Rubik's Cube? (y/n) ")
+    if requestColors is 'y':
+        resetInitialStateColors()
+        getUserColors()
     return INITIAL_STATE
+
+def resetInitialStateColors():
+    global INT_TO_COLORS
+    for i in range(6):
+        INT_TO_COLORS[i] = None
+
+def getUserColors():
+    global INT_TO_COLORS
+    for i in range(6):
+        color = input("Please Enter Color " + str(i+1) + ": ").upper()
+        while checkIfColorExists(color[0]):
+            print("The color has initials that already exist")
+            color = input("Please Enter Color " + str(i + 1) + ": ").upper()
+        INT_TO_COLORS[i] = color[0]
+
+
+def checkIfColorExists(char):
+    global INT_TO_COLORS
+    for i in range(6):
+        if INT_TO_COLORS[i] == char:
+            return True
+    return False
 
 def deepEquals(state1, state2):
     for side in range(6):
@@ -44,6 +70,13 @@ def deepEquals(state1, state2):
             if state1[side][tile] != state2[side][tile]:
                 return False
     return True
+
+def scramble():
+    state = None
+    for i in range (100):
+        value = random.randint(0,5)
+        state = OPERATORS[value].apply(INITIAL_STATE)
+    return state
 
 
 def hashCode(state):
@@ -91,9 +124,6 @@ def describeState(state):
 
     for i in range(0, 9, 3):
         print("      " + INT_TO_COLORS.get(tiles[i]) + " " + INT_TO_COLORS.get(tiles[i + 1]) + " " + INT_TO_COLORS.get(tiles[i + 2]))
-
-def scramble():
-    return None
 
 
 

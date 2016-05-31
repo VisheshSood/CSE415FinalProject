@@ -1,4 +1,5 @@
 import copy
+import random
 
 # <METADATA>
 QUIET_VERSION = "0.1"
@@ -35,7 +36,41 @@ def createInitialState():
     global INITIAL_STATE
     createGoalState()
     createOperators()
+    requestColors = input("Would you like to customize the colors of your Rubik's Cube? (y/n) ")
+    if requestColors is 'y':
+        resetInitialStateColors()
+        getUserColors()
     return INITIAL_STATE
+
+def resetInitialStateColors():
+    global INT_TO_COLORS
+    for i in range(6):
+        INT_TO_COLORS[i] = None
+
+def getUserColors():
+    global INT_TO_COLORS
+    for i in range(6):
+        color = input("Please Enter Color " + str(i+1) + ": ").upper()
+        while checkIfColorExists(color[0]):
+            print("The color has initials that already exist")
+            color = input("Please Enter Color " + str(i + 1) + ": ").upper()
+        INT_TO_COLORS[i] = color[0]
+
+
+def checkIfColorExists(char):
+    global INT_TO_COLORS
+    for i in range(6):
+        if INT_TO_COLORS[i] == char:
+            return True
+    return False
+
+def scramble():
+    state = None
+    for i in range (100):
+        value = random.randint(0,5)
+        state = OPERATORS[value].apply(INITIAL_STATE)
+    return state
+
 
 
 def deepEquals(state1, state2):
@@ -381,9 +416,9 @@ def test():
 #createInitialState()
 #print((right(right(back(back(front(front(up(up(GOAL_STATE))))))))))
 #
-#print(up(GOAL_STATE))
+#describeState(INITIAL_STATE)
 # print()
-#describeState(left(GOAL_STATE))
+#describeState(GOAL_STATE)
 # print()
 # describeState(left(left(GOAL_STATE)))
 # createOperators()
