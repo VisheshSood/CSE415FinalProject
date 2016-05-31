@@ -17,10 +17,6 @@ PROBLEM_DESC = \
 # SIDES = ["Left", "Front", "Right", "Back", "Up", "Down"]
 INITIAL_STATE = [[2, 2, 0, 0], [1, 1, 3, 3], [2, 2, 0, 0], [3, 3, 1, 1], [5, 4, 5, 4], [4, 5, 4, 5]]
 
-
-
-
-
 GOAL_STATE = None
 
 OPERATORS = []
@@ -346,7 +342,7 @@ def createOperators():
 
 HEURISTICS = {'h_layer': h_layer, 'h_side': h_side, 'h_none':h_none}
 
-createGoalState()
+#createGoalState()
 
 #print((right(right(back(back(front(front(up(up(GOAL_STATE))))))))))
 #

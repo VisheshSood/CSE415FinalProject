@@ -16,9 +16,9 @@ PROBLEM_DESC = \
 # </METADATA>
 
 # SIDES = ["Left", "Front", "Right", "Back", "Up", "Down"]
-INITIAL_STATE = [[4, 2, 0, 5, 0, 4, 3, 1, 1], [1, 2, 1, 0, 1, 5, 4, 1, 1],
-                 [5, 0, 0, 0, 2, 5, 5, 4, 0], [4, 2, 3, 1, 3, 3, 5, 5, 2],
-                 [2, 4, 3, 1, 4, 3, 4, 3, 2], [2, 0, 0, 4, 5, 3, 5, 2, 3]]
+INITIAL_STATE = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [3, 1, 3, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2, 2, 2], [1, 3, 1, 3, 3, 3, 3, 3, 3], [4, 4, 4, 4, 4, 4, 4, 4, 4], [5, 5, 5, 5, 5, 5, 5, 5, 5]]
+
+
 
 
 GOAL_STATE = None
@@ -48,7 +48,7 @@ def deepEquals(state1, state2):
 
 
 def hashCode(state):
-    return str(GOAL_STATE)
+    return str(state)
 
 
 def copyState(state):
@@ -112,7 +112,7 @@ def left(state):
             s[rotation[i]][8] = s[rotation[i - 1]][0]
             s[rotation[i]][5] = s[rotation[i - 1]][3]
             s[rotation[i]][2] = s[rotation[i - 1]][6]
-        if rotation[i] == 4:
+        elif rotation[i] == 4:
             s[rotation[i]][0] = s[rotation[i - 1]][8]
             s[rotation[i]][3] = s[rotation[i - 1]][5]
             s[rotation[i]][6] = s[rotation[i - 1]][2]
@@ -137,7 +137,7 @@ def right(state):
             s[rotation[i]][6] = s[rotation[i - 1]][2]
             s[rotation[i]][3] = s[rotation[i - 1]][5]
             s[rotation[i]][0] = s[rotation[i - 1]][8]
-        if rotation[i] == 5:
+        elif rotation[i] == 5:
             s[rotation[i]][2] = s[rotation[i - 1]][6]
             s[rotation[i]][5] = s[rotation[i - 1]][3]
             s[rotation[i]][8] = s[rotation[i - 1]][0]
@@ -371,21 +371,24 @@ def h_layer(s):
 def createOperators():
     global OPERATORS
     operators = OPERATORS
-    operators.append(Operator("Up", lambda s: up(up(s))))
-    operators.append(Operator("Down", lambda s: down(down(s))))
-    operators.append(Operator("Left", lambda s: left(left(s))))
-    operators.append(Operator("Right", lambda s: right(right(s))))
-    operators.append(Operator("Front", lambda s: front(front(s))))
-    operators.append(Operator("Back", lambda s: back(back(s))))
+    operators.append(Operator("Rotate Up", lambda s: up(up(s))))
+    operators.append(Operator("Rotate Down", lambda s: down(down(s))))
+    operators.append(Operator("Rotate Left", lambda s: left(left(s))))
+    operators.append(Operator("Rotate Right", lambda s: right(right(s))))
+    operators.append(Operator("Rotate Front", lambda s: front(front(s))))
+    operators.append(Operator("Rotate Back", lambda s: back(back(s))))
 
 
-HEURISTICS = {'h_layer': h_layer, 'h_side': h_side}
+def h_none(s):
+    return 0
+
+HEURISTICS = {'h_layer': h_layer, 'h_side': h_side, 'h_none': h_none}
 
 
 
-createInitialState()
+#createInitialState()
 
-print(up(up(GOAL_STATE)))
+#print(down(down(left(left(up(up(left(left(down(down(up(up(GOAL_STATE)))))))))))))
 # createOperators()
 # print()
 #describeState(OPERATORS[0].apply(INITIAL_STATE))

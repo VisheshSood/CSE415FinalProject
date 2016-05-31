@@ -2,19 +2,18 @@ import sys
 import queue as Q
 import importlib
 
-Problem = importlib.import_module('rubik2x2')
-heuristics = Problem.HEURISTICS['h_side']
+Problem = importlib.import_module('rubik')
+heuristics = Problem.HEURISTICS['h_none']
 
 print("\nWelcome to AStar")
 COUNT = None
 BACKLINKS = {}
 BACKACTIONS = {}
 
-
 def runAStar():
     initial_state = Problem.createInitialState()
     print("Initial State:")
-    print(Problem.describeState(initial_state))
+    Problem.describeState(initial_state)
     global COUNT, BACKLINKS, BACKACTIONS
     COUNT = 0
     IterativeAStar(initial_state)
@@ -24,7 +23,6 @@ def runAStar():
 
 def IterativeAStar(initial_state):
     global COUNT, BACKLINKS, BACKACTIONS
-
     OPEN = Q.PriorityQueue()
     OPEN.put((heuristics(initial_state), initial_state))
     LIST = []
@@ -32,8 +30,6 @@ def IterativeAStar(initial_state):
     CLOSED = []
     BACKLINKS[Problem.hashCode(initial_state)] = -1
     BACKACTIONS[Problem.hashCode(initial_state)] = 'Start State'
-
-
     while LIST != []:
         S_tuple = OPEN.get()
         S = S_tuple[1]
