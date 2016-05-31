@@ -3,7 +3,7 @@ import queue as Q
 import importlib
 
 Problem = importlib.import_module('rubik')
-heuristics = Problem.HEURISTICS['h_row']
+heuristics = Problem.HEURISTICS['h_side']
 
 print("\nWelcome to AStar")
 COUNT = None
@@ -29,7 +29,7 @@ def IterativeAStar(initial_state):
     LIST = []
     LIST.append(initial_state)
     CLOSED = []
-    BACKLINKS[Problem.HASHCODE(initial_state)] = -1
+    BACKLINKS[Problem.hashCode(initial_state)] = -1
 
     while LIST != []:
         S_tuple = OPEN.get()
@@ -39,8 +39,8 @@ def IterativeAStar(initial_state):
         LIST.remove(S)
         CLOSED.append(S)
 
-        if Problem.GOAL_TEST(S):
-            print(Problem.GOAL_MESSAGE_FUNCTION(S))
+        if Problem.goalTest(S):
+            Problem.goalMessage()
             print("COUNT = " + str(COUNT))
             print("len(OPEN)=" + str(len(LIST)))
             print("len(CLOSED)=" + str(len(CLOSED)))
@@ -48,25 +48,28 @@ def IterativeAStar(initial_state):
             return
 
         COUNT += 1
+        # Problem.describeState(S)
+        # print()
         if (COUNT % 32) == 0:
             print(".", end="")
             if (COUNT % 128) == 0:
+                print()
+                Problem.describeState(S)
                 print("COUNT = " + str(COUNT))
                 print("len(OPEN)=" + str(len(LIST)))
                 print("len(CLOSED)=" + str(len(CLOSED)))
 
         L = []
         for op in Problem.OPERATORS:
-            if op.precond(S):
-                new_state = op.state_transf(S)
-                if not occurs_in(new_state, CLOSED):
-                    L.append(new_state)
-                    BACKLINKS[Problem.HASHCODE(new_state)] = S
+            new_state = op.state_transf(S)
+            if not occurs_in(new_state, CLOSED):
+                L.append(new_state)
+                BACKLINKS[Problem.hashCode(new_state)] = S
 
         repeat = -1
         for i in range(len(L)):
             for j in range(len(LIST)):
-                if Problem.DEEP_EQUALS(L[i], LIST[j]):
+                if Problem.deepEquals(L[i], LIST[j]):
                     repeat = i;
                     break
         if repeat != -1:
@@ -94,7 +97,7 @@ def backtrace(S):
 
 def occurs_in(s1, lst):
     for s2 in lst:
-        if Problem.DEEP_EQUALS(s1, s2): return True
+        if Problem.deepEquals(s1, s2): return True
     return False
 
 

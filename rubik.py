@@ -15,9 +15,14 @@ PROBLEM_DESC = \
 # </METADATA>
 
 # SIDES = ["Left", "Front", "Right", "Back", "Up", "Down"]
-INITIAL_STATE = [[4, 2, 0, 5, 0, 4, 3, 1, 1], [1, 2, 1, 0, 1, 5, 4, 1, 1],
-                 [5, 0, 0, 0, 2, 5, 5, 4, 0], [4, 2, 3, 1, 3, 3, 5, 5, 2],
-                 [2, 4, 3, 1, 4, 3, 4, 3, 2], [2, 0, 0, 4, 5, 3, 5, 2, 3]]
+INITIAL_STATE = [[3, 3, 3, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 1, 1, 1], [1, 1, 1, 2, 2, 2, 2, 2, 2], [2, 2, 2, 3, 3, 3, 3, 3, 3], [4, 4, 4, 4, 4, 4, 4, 4, 4], [5, 5, 5, 5, 5, 5, 5, 5, 5]]
+
+
+# [[4, 2, 0, 5, 0, 4, 3, 1, 1], [1, 2, 1, 0, 1, 5, 4, 1, 1],
+#                  [5, 0, 0, 0, 2, 5, 5, 4, 0], [4, 2, 3, 1, 3, 3, 5, 5, 2],
+#                  [2, 4, 3, 1, 4, 3, 4, 3, 2], [2, 0, 0, 4, 5, 3, 5, 2, 3]]
+
+
 GOAL_STATE = None
 
 OPERATORS = []
@@ -33,6 +38,8 @@ class Operator:
 
 def createInitialState():
     global INITIAL_STATE
+    createGoalState()
+    createOperators()
     return INITIAL_STATE
 
 def deepEquals(state1, state2):
@@ -43,7 +50,7 @@ def deepEquals(state1, state2):
     return True
 
 
-def hashcode(state):
+def hashCode(state):
     return str(GOAL_STATE)
 
 
@@ -61,6 +68,10 @@ def createGoalState():
         state.append(new)
     GOAL_STATE = state
 
+
+def goalTest(s):
+    global GOAL_STATE
+    return deepEquals(GOAL_STATE, s)
 
 def goalMessage():
     print("The Rubik's Cube has been solved!!")
@@ -279,6 +290,85 @@ def back(state):
 
     return s
 
+
+def h_side(s):
+    value = 0
+    for tile in s[0]:
+        if tile == 0:
+            value += 1
+    for tile in s[1]:
+        if tile == 1:
+            value += 1
+    for tile in s[2]:
+        if tile == 2:
+            value += 1
+    for tile in s[3]:
+        if tile == 3:
+            value += 1
+    for tile in s[4]:
+        if tile == 4:
+            value += 1
+    for tile in s[5]:
+        if tile == 5:
+            value += 1
+
+
+    return value
+
+def h_layer(s):
+    value = 0
+    for tile in s[5]:
+        if tile == 5:
+            value += 1
+
+    greenList = s[0][-3:]
+    orangeList = s[1][-3:]
+    blueList = s[2][-3:]
+    redList = s[3][-3:]
+
+    count = 0
+    for val in greenList:
+        if val == 0:
+            value += 1
+            count += 1
+
+    if count == 3:
+        value += 3
+
+    count = 0
+    for val in orangeList:
+        if val == 1:
+            value += 1
+            count += 1
+
+    if count == 3:
+        value += 3
+
+    count = 0
+    for val in blueList:
+        if val == 2:
+            value += 1
+            count += 1
+
+    if count == 3:
+        value += 3
+
+    count = 0
+    for val in redList:
+        if val == 3:
+            value += 1
+            count += 1
+
+    if count == 3:
+        value += 3
+
+    for tile in s[4]:
+        if tile == 4:
+            value += 1
+
+    return value
+
+
 def createOperators():
     global OPERATORS
     operators = OPERATORS
@@ -289,18 +379,21 @@ def createOperators():
     operators.append(Operator("Front", lambda s: front(s)))
     operators.append(Operator("Back", lambda s: back(s)))
 
+
+HEURISTICS = {'h_layer': h_layer, 'h_side': h_side}
+
+
 createGoalState()
-describeState(GOAL_STATE)
-createOperators()
-print()
-describeState(OPERATORS[0].apply(INITIAL_STATE))
-print()
-describeState(OPERATORS[1].apply(INITIAL_STATE))
-print()
-describeState(OPERATORS[2].apply(INITIAL_STATE))
-print()
-describeState(OPERATORS[3].apply(INITIAL_STATE))
 
-
-
-
+#print(up(up(up(GOAL_STATE))))
+# createOperators()
+# print()
+# describeState(OPERATORS[0].apply(INITIAL_STATE))
+# print()
+# describeState(OPERATORS[1].apply(INITIAL_STATE))
+# print()
+# describeState(OPERATORS[2].apply(INITIAL_STATE))
+# print()
+# describeState(OPERATORS[3].apply(INITIAL_STATE))
+# print(str(INITIAL_STATE[2][-3:]))
+#
