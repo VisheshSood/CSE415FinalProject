@@ -79,21 +79,23 @@ def goalMessage():
 def describeState(state):
     global INT_TO_COLORS
     tiles = state[4]
+    print("         -------")
     for i in range(0, 4, 2):
-        print("    " + INT_TO_COLORS.get(tiles[i]) + " " + INT_TO_COLORS.get(tiles[i + 1]) + " ")
-
+        print("        | " + INT_TO_COLORS.get(tiles[i]) + " | " + INT_TO_COLORS.get(tiles[i + 1]) + " | ")
+    print("---------------------------------")
     for i in range(0, 4, 2):
-        line = ""
-        line += INT_TO_COLORS.get(state[0][i]) + " " + INT_TO_COLORS.get(state[0][i + 1]) + " "
-        line += INT_TO_COLORS.get(state[1][i]) + " " + INT_TO_COLORS.get(state[1][i + 1]) + " "
-        line += INT_TO_COLORS.get(state[2][i]) + " " + INT_TO_COLORS.get(state[2][i + 1]) + " "
-        line += INT_TO_COLORS.get(state[3][i]) + " " + INT_TO_COLORS.get(state[3][i + 1]) + " "
+        line = "| "
+        line += INT_TO_COLORS.get(state[0][i]) + " | " + INT_TO_COLORS.get(state[0][i + 1]) + " | "
+        line += INT_TO_COLORS.get(state[1][i]) + " | " + INT_TO_COLORS.get(state[1][i + 1]) + " | "
+        line += INT_TO_COLORS.get(state[2][i]) + " | " + INT_TO_COLORS.get(state[2][i + 1]) + " | "
+        line += INT_TO_COLORS.get(state[3][i]) + " | " + INT_TO_COLORS.get(state[3][i + 1]) + " | "
         print(line)
     tiles = state[5]
-
+    print("---------------------------------")
     for i in range(0, 4, 2):
-        print("    " + INT_TO_COLORS.get(tiles[i]) + " " + INT_TO_COLORS.get(tiles[i + 1]) + " ")
+        print("        | " + INT_TO_COLORS.get(tiles[i]) + " | " +  INT_TO_COLORS.get(tiles[i + 1]) + " | ")
 
+    print("         -------")
 
 # going from 5 to 3, reverse order of tiles
 # reverse back when going
@@ -376,12 +378,12 @@ def test():
 
 
 #createGoalState()
-#createInitialState()
+createInitialState()
 #print((right(right(back(back(front(front(up(up(GOAL_STATE))))))))))
 #
 #print(up(GOAL_STATE))
 # print()
-#describeState(left(GOAL_STATE))
+describeState(left(GOAL_STATE))
 # print()
 # describeState(left(left(GOAL_STATE)))
 # createOperators()
