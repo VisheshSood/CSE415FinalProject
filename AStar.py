@@ -2,8 +2,8 @@ import sys
 import queue as Q
 import importlib
 
-Problem = importlib.import_module('rubik2x2')
-heuristics = Problem.HEURISTICS['h_layer']
+Problem = importlib.import_module('rubik')
+heuristics = Problem.HEURISTICS['h_none']
 
 print("\nWelcome to AStar")
 COUNT = None

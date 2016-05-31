@@ -378,12 +378,12 @@ def test():
 
 
 #createGoalState()
-createInitialState()
+#createInitialState()
 #print((right(right(back(back(front(front(up(up(GOAL_STATE))))))))))
 #
 #print(up(GOAL_STATE))
 # print()
-describeState(left(GOAL_STATE))
+#describeState(left(GOAL_STATE))
 # print()
 # describeState(left(left(GOAL_STATE)))
 # createOperators()

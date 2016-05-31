@@ -16,7 +16,9 @@ PROBLEM_DESC = \
 # </METADATA>
 
 # SIDES = ["Left", "Front", "Right", "Back", "Up", "Down"]
-INITIAL_STATE = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [3, 1, 3, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2, 2, 2], [1, 3, 1, 3, 3, 3, 3, 3, 3], [4, 4, 4, 4, 4, 4, 4, 4, 4], [5, 5, 5, 5, 5, 5, 5, 5, 5]]
+INITIAL_STATE = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [3, 1, 3, 1, 1, 1, 1, 1, 1],
+                 [2, 2, 2, 2, 2, 2, 2, 2, 2], [1, 3, 1, 3, 3, 3, 3, 3, 3],
+                 [4, 4, 4, 4, 4, 4, 4, 4, 4], [5, 5, 5, 5, 5, 5, 5, 5, 5]]
 INT_TO_COLORS = {0: 'G', 1: 'O', 2: 'B', 3: 'R', 4: 'Y', 5: 'W',}
 GOAL_STATE = None
 ACTIONS = ["Up", "Down", "Left", "Right", "Front", "Back"]
@@ -410,9 +412,9 @@ def test():
     grid_MDP.checkSuccessors()
     #displayQValues(grid_MDP)
     #displayOptimalPolicy(grid_MDP)
-createInitialState()
+#createInitialState()
 
-test()
+#test()
 
 
 #print(down(down(left(left(up(up(left(left(down(down(up(up(GOAL_STATE)))))))))))))
@@ -420,7 +422,7 @@ test()
 # print()
 #describeState(OPERATORS[0].apply(INITIAL_STATE))
 # print()
-describeState(OPERATORS[1].apply(INITIAL_STATE))
+#describeState(OPERATORS[1].apply(INITIAL_STATE))
 # print()
 # describeState(OPERATORS[2].apply(INITIAL_STATE))
 # print()
