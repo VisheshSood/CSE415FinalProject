@@ -1,31 +1,47 @@
-import sys
 import queue as Q
 import importlib
 
-Problem = importlib.import_module('rubik')
-heuristics = Problem.HEURISTICS['h_none']
-
-print("\nWelcome to our A* Implementation for solving a Rubik's Cube")
 COUNT = None
 BACKLINKS = {}
 BACKACTIONS = {}
 
+print("\nWelcome to our A* Implementation for solving a Rubik's Cube")
+
+# Ask the user which cube and heuristics they would like to use
+# No error checking, assume user enters correct data
+print("\nWhich Rubik's Cube would you like to solve: ")
+print("\n[a] 2x2")
+print("\n[b] 3x3")
+rubik = input("\nEnter a or b: ")
+if rubik == 'a':
+    Problem = importlib.import_module('rubik2x2')
+else:
+    Problem = importlib.import_module('rubik')
+print("\nWhich Heuristic would you like to solve: ")
+print("\n[a] Sides")
+print("\n[b] Layers")
+heuristicsInput = input("\nEnter a or b: ")
+if heuristicsInput == 'a':
+    heuristics = Problem.HEURISTICS['h_side']
+else:
+    heuristics = Problem.HEURISTICS['h_layer']
+
+# Function to run AStar
 def runAStar():
     initial_state = Problem.createInitialState()
     print("This is your initial state:")
     Problem.describeState(initial_state)
     scramble = input("Would you like to scramble it? (y/n) ")
     while scramble is 'y':
-        initial_state = Problem.scramble()
+        initial_state = Problem.scramble(initial_state)
         print("Your initial state is now:")
         Problem.describeState(initial_state)
         scramble = input("Would you like to scramble it again? (y/n) ")
-
     global COUNT, BACKLINKS, BACKACTIONS
     COUNT = 0
     IterativeAStar(initial_state)
     print()
-    print(str(COUNT) + " states examined.")
+    print("Solved with " + str(COUNT) + " states examined.")
 
 
 def IterativeAStar(initial_state):
@@ -41,12 +57,11 @@ def IterativeAStar(initial_state):
         S_tuple = OPEN.get()
         S = S_tuple[1]
         step = S_tuple[0] - heuristics(S)
-
         LIST.remove(S)
         CLOSED.append(S)
-
         if Problem.goalTest(S):
             Problem.goalMessage()
+            Problem.describeState(S)
             print("COUNT = " + str(COUNT))
             print("len(OPEN)=" + str(len(LIST)))
             print("len(CLOSED)=" + str(len(CLOSED)))
@@ -54,8 +69,6 @@ def IterativeAStar(initial_state):
             return
 
         COUNT += 1
-        #Problem.describeState(S)
-        # print()
         if (COUNT % 32) == 0:
             print(".", end="")
             if (COUNT % 128) == 0:
@@ -64,7 +77,6 @@ def IterativeAStar(initial_state):
                 print("COUNT = " + str(COUNT))
                 print("len(OPEN)=" + str(len(LIST)))
                 print("len(CLOSED)=" + str(len(CLOSED)))
-
         L = []
         for op in Problem.OPERATORS:
             new_state = op.state_transf(S)
@@ -72,7 +84,6 @@ def IterativeAStar(initial_state):
                 L.append(new_state)
                 BACKLINKS[Problem.hashCode(new_state)] = S
                 BACKACTIONS[Problem.hashCode(new_state)] = op.name
-
         repeat = -1
         for i in range(len(L)):
             for j in range(len(LIST)):
@@ -81,10 +92,8 @@ def IterativeAStar(initial_state):
                     break
         if repeat != -1:
             del L[repeat]
-
         for s2 in L:
             OPEN.put((step + 1 + heuristics(s2), s2))
-
         LIST = LIST + L
 
 
@@ -101,7 +110,7 @@ def backtrace(S):
         else :
             X = 'Done!'
     path.reverse()
-    print("Solution path: ")
+    print("\nSolution path: ")
     for s in path:
         print()
         print(s[0] + ':')

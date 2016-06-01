@@ -64,13 +64,12 @@ def checkIfColorExists(char):
             return True
     return False
 
-def scramble():
-    state = None
+def scramble(s):
+    state = s
     for i in range (100):
         value = random.randint(0,5)
-        state = OPERATORS[value].apply(INITIAL_STATE)
+        state = OPERATORS[value].apply(state)
     return state
-
 
 
 def deepEquals(state1, state2):
