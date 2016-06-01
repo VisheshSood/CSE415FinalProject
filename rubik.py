@@ -97,10 +97,11 @@ def createGoalState():
         state.append(new)
     GOAL_STATE = state
 
-
 def goalTest(s):
-    global GOAL_STATE
-    return deepEquals(GOAL_STATE, s)
+    for side in s:
+        if len(set(side)) > 1:
+            return False
+    return True
 
 def goalMessage():
     print("The Rubik's Cube has been solved!!")
