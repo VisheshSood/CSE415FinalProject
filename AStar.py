@@ -12,7 +12,7 @@ print("\nWelcome to our A* Implementation for solving a Rubik's Cube")
 print("\nWhich Rubik's Cube would you like to solve: ")
 print("\n[a] 2x2")
 print("\n[b] 3x3")
-rubik = input("\nEnter a or b: ")
+rubik = input("\nEnter a or b: ").lower()
 if rubik == 'a':
     Problem = importlib.import_module('rubik2x2')
 else:
@@ -20,7 +20,7 @@ else:
 print("\nWhich Heuristic would you like to solve: ")
 print("\n[a] Sides")
 print("\n[b] Layers")
-heuristicsInput = input("\nEnter a or b: ")
+heuristicsInput = input("\nEnter a or b: ").lower()
 if heuristicsInput == 'a':
     heuristics = Problem.HEURISTICS['h_side']
 else:

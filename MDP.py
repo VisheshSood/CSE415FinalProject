@@ -1,11 +1,12 @@
 '''MDP.py
 Jose Daniel Gil Chavez, Vishesh Sood
 CSE 415
+Final Project
 
-S. Tanimoto, May 2016.
+MDP File to Support 2X2 Rubik's Cube
 
-Provides representations for Markov Decision Processes, plus
-functionality for running the transitions.
+Provides representations for Markov Decision Processes and Q-learning
+exploration.
 
 The transition function should be a function of three arguments:
 T(s, a, sp), where s and sp are states and a is an action.
@@ -18,15 +19,7 @@ operators:  state-space search objects consisting of a precondition
  We assume these are in the "QUIET" format used in earlier assignments.
 
 actions:  objects (for us just Python strings) that are
- stochastically mapped into operators at runtime according
- to the Transition function.
-
-
-Status:
- As of May 14 at 11:00 AM:
-   Basic methods have been prototyped.
-
-
+ mapped to the operators through the registered field.
 '''
 import random
 
@@ -37,6 +30,9 @@ class MDP:
         self.known_states = set()
         self.succ = {} # hash of adjacency lists by state.
 
+    # all register functions gets the required functionallity for the
+    # given "World"
+
     def register_start_state(self, start_state):
         self.start_state = start_state
         self.known_states.add(str(start_state))
@@ -44,8 +40,17 @@ class MDP:
     def register_goal_state(self, goal_state):
         self.goal_state = goal_state
 
+    def register_goal_test(self, goal_test):
+        self.goal_test = goal_test
+
     def register_actions(self, action_list):
         self.actions = action_list
+
+    def register_action_to_op(self, action_to_op):
+        self.action_to_op = action_to_op
+
+    def register_describe_state(self, ds):
+        self.describe_state = ds
 
     def register_operators(self, op_list):
         self.ops = op_list
@@ -66,67 +71,33 @@ class MDP:
             neighbors = []
             for op in self.ops:
                 print(op.name)
-                #print(state)
                 neighbors.append(op.apply(state))
-            #neighbors = [op.apply(state) for op in self.ops]
             self.succ[str(state)]=neighbors
             for neighbor in neighbors:
                 self.known_states.add(str(neighbor))
         return neighbors
 
-    def random_episode(self, nsteps):
-        self.current_state = self.start_state
-        self.current_reward = 0.0
-        for i in range(nsteps):
-            self.take_action(random.choice(self.actions))
-            if self.current_state == self.goal_state:
-                print('Terminating at DEAD state.')
-                break
-        if REPORTING: print("Done with "+str(i)+" of random exploration.")
 
+    # updates the current state to the resulting state of applying the given
+    # action to the current state
     def take_action(self, a):
         s = self.current_state
-        neighbors = self.state_neighbors(s)
-        threshold = 0.0
-        rnd = random.uniform(0.0, 1.0)
-        r = 0
-        for sp in neighbors:
-            threshold += self.T(s, a, sp)
-            if threshold>rnd:
-                r = self.R(s, a, sp)
-                break
+        sp = self.action_to_op.get(a).apply(s)
+        r = self.R(s, a, sp)
         self.current_state = sp
+        self.describe_state(self.current_state)
         if REPORTING: print("After action "+a+", moving to state "+str(sp)+\
                            "; reward is "+str(r))
 
+    # finds all the possible states and saves them
     def generateAllStates(self):
         self.IterativeDFS(self.start_state)
-        # self.ending_states = []
-        # for state in self.known_states:
-        #     if "DEAD" in self.succ.get(state):
-        #         self.ending_states.append(state)
-        # self.indexOfEnd()
-        for s in self.known_states:
-            print(s)
-        print(len(self.known_states))
+        # for s in self.known_states:
+        #     print(s)
+        # print(len(self.known_states))
 
-    def ValueIterations(self, discount, iterations):
-        self.V = {}
-        for state in self.known_states:
-            self.V[str(state)] = 0
-        for n in range(iterations):
-            new_V = {}
-            for state in self.known_states:
-                possible_values = []
-                for action in self.actions:
-                    value = 0
-                    for successor in self.succ.get(str(state)):
-                        value += self.T(state, action, successor)*(self.R(state, action, successor) + discount * self.V.get(str(successor)))
-                    possible_values.append(value)
-                max_value = max(possible_values)
-                new_V[str(state)] = max_value
-            self.V = new_V
 
+    # performs Q learning for the number
     def QLearning(self, discount, nEpisodes, epsilon):
         self.QValues = {}
         self.N = {}
@@ -137,16 +108,21 @@ class MDP:
                 self.N[(state, action)] = 0
         for i in range(nEpisodes):
             self.current_state = self.start_state
-            while self.current_state != self.goal_state:
+            while True:
                 s = self.current_state
                 a = self.decideAction(s, epsilon)
                 self.N[(str(s), a)] += 1
                 self.QValues[(str(s), a)] = self.Q(str(s), a, discount, epsilon)
+                if self.goal_test(self.current_state):
+                    break
 
 
+    # calculates the alpha leaning rate
     def alpha(self, state, action):
         return 1 / self.N.get((str(state), action))
 
+
+    # retuns the name of the best possible action for the given state
     def getMaxAction(self, state):
         max_action = ""
         max = -10000
@@ -157,6 +133,8 @@ class MDP:
                 max_action = action
         return max_action
 
+
+    # returns the value of the Q function for the bellman equation
     def Q(self, s, a, discount, epsilon):
         QVal = self.QValues.get((str(s), a))
         alpha = self.alpha(s, a)
@@ -169,33 +147,29 @@ class MDP:
         if T == 0:
             self.current_state = s
             value = QVal
-        print("Value for S:", s, " ", value)
+        print("Value = ", value)
+        #self.describe_state(eval(s))
+        #print("Value for S:", s, " ", value)
         return value
 
+    # decide to take the optimal action, or explore a new path
+    # according to the greedy epsilon learning
     def decideAction(self, state, epsilon):
         rnd = random.uniform(0.0, 1.0)
-        # if state in self.ending_states:
-        #     return self.actions[self.index_of_end]
         if rnd < epsilon:
             action_num = random.randint(0, 4)
             return self.actions[action_num]
         else:
             return self.getMaxAction(state)
 
+    # creates a dictionary that maps every state with its best possible action
     def extractPolicy(self):
         self.optPolicy = {}
         for state in self.known_states:
-            # if state in self.ending_states:
-            #     max_action = self.actions[4]
-            # else:
             max_action = self.getMaxAction(state)
             self.optPolicy[state] = max_action
 
-    def indexOfEnd(self):
-        for i in range(len(self.actions)):
-            if self.actions[i] == 'End':
-                self.index_of_end = i
-
+    # iterative Depth first search to find every state
     def IterativeDFS(self, initial_state):
         OPEN = [initial_state]
         CLOSED = []
@@ -208,7 +182,3 @@ class MDP:
             for state in L:
                if state not in CLOSED:
                    OPEN.append(state)
-
-    def checkSuccessors(self):
-        for state in self.known_states:
-            print("Successors to ", state, ": ",self.succ.get(str(state)))
